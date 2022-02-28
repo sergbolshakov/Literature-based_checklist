@@ -1,9 +1,11 @@
 .Rproj.user/
 .Rhistory
-.RData
+.RData*
 .Ruserdata
 
 data/Data.tsv
 data/References.tsv
+
+output/
 
 temp/

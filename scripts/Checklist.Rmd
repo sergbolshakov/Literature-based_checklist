@@ -1,0 +1,21 @@
+---
+title: "Checklist"
+output: officedown::rdocx_document
+---
+
+```{r setup, include=FALSE}
+library(magrittr)
+load("../output/Checklist_aphhet_euro.Rda")
+knitr::opts_chunk$set(echo = TRUE, results = "asis")
+```
+
+```{r echo=FALSE}
+checklist %>% 
+  dplyr::rowwise() %>% 
+  readr::format_delim(delim = "\n",
+                      col_names = FALSE,
+                      quote = "none",
+                      eol = "\n\n") %>% 
+  cat("\n")
+```
+

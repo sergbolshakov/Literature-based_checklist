@@ -1,7 +1,13 @@
+library(magrittr)
+
+# Select dataframe you need
+
+data <- aphhet_euro
+
 # Subset substrates ------------------------------------------------------------
 
 substrates_ungrouped <- 
-  aphhet_euro %>% 
+  data %>% 
   dplyr::select(acceptedNameUsage, associatedTaxa) %>% 
   dplyr::group_by(acceptedNameUsage) %>% 
   dplyr::distinct() %>% 

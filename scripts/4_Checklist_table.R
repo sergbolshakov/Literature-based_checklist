@@ -1,10 +1,16 @@
-# Checklist preparation
+library(magrittr)
+
+# Select dataframe you need
+
+data <- aphhet_euro
+
+# Merge citations for each region ----------------------------------------------
 
 citations <- 
-  aphhet_euro %>% 
+  data %>% 
   dplyr::left_join(synonyms_indexed,
                    by = c("acceptedNameUsage", "scientificName")) %>% 
-  dplyr::select(bibliographicCitation_clear,
+  dplyr::select(bibliographicCitation_cl,
                 PublicationYear,
                 acceptedNameUsage,
                 scientificName,
@@ -18,25 +24,23 @@ citations <-
                  PublicationYear,
                  counter) %>% 
   dplyr::group_by(acceptedNameUsage,
-                  bibliographicCitation_clear,
+                  bibliographicCitation_cl,
                   stateProvince) %>% 
   dplyr::mutate(
     counter = stringr::str_c(counter,
                              collapse = ","),
-    bibliographicCitation_clear = dplyr::case_when(
-      counter != "" ~ stringr::str_c("^",
-                                     counter,
-                                     "^",
-                                     bibliographicCitation_clear),
-      TRUE ~ bibliographicCitation_clear
+    bibliographicCitation_cl = dplyr::case_when(
+      counter != "" ~ stringr::str_c("^", counter, "^",
+                                     bibliographicCitation_cl),
+      TRUE ~ bibliographicCitation_cl
       ),
-    bibliographicCitation_clear = dplyr::case_when(
+    bibliographicCitation_cl = dplyr::case_when(
       taxonomicStatus == "reidentification" ~ stringr::str_c(
-        bibliographicCitation_clear,
+        bibliographicCitation_cl,
         ", as ",
         scientificName
         ),
-      TRUE ~ bibliographicCitation_clear
+      TRUE ~ bibliographicCitation_cl
       )
     ) %>% 
   dplyr::filter(!taxonomicStatus %in% c("#N/A",
@@ -46,14 +50,16 @@ citations <-
                 ) %>% 
   dplyr::select(acceptedNameUsage,
                 stateProvince,
-                bibliographicCitation_clear) %>% 
+                bibliographicCitation_cl) %>% 
   dplyr::group_by(acceptedNameUsage,
                   stateProvince) %>% 
   dplyr::distinct() %>% 
-  dplyr::summarize(citations = stringr::str_c(bibliographicCitation_clear,
+  dplyr::summarize(citations = stringr::str_c(bibliographicCitation_cl,
                                               collapse = "; ")
                    ) %>% 
   dplyr::ungroup()
+
+# Merge regions with citations for each accepted species -----------------------
   
 distributions <- 
   citations %>% 
@@ -70,6 +76,8 @@ distributions <-
                                                      collapse = "; ")
                    )
 
+# Combine synonyms, data on substrates and distribution per regions ------------
+
 checklist <- 
   distributions %>% 
   dplyr::left_join(synonyms) %>%
@@ -80,8 +88,7 @@ checklist <-
                    ) %>% 
   dplyr::mutate(acceptedNameUsage = dplyr::case_when(
     counter != "" ~ stringr::str_c(acceptedNameUsage,
-                                   "!",
-                                   counter),
+                                   "^", counter, "^"),
     TRUE ~ acceptedNameUsage
     )) %>% 
   dplyr::select(acceptedNameUsage,
@@ -90,11 +97,15 @@ checklist <-
                 region_citations) %>% 
   dplyr::filter(acceptedNameUsage != "#N/A",
                 !grepl("Ω", acceptedNameUsage)) %>% 
-  dplyr::mutate(substrates = tidyr::replace_na(substrates, "No data about substrate."))
+  dplyr::mutate(acceptedNameUsage = stringr::str_c("**",
+                                                   acceptedNameUsage,
+                                                   "**"),
+                synonyms = tidyr::replace_na(synonyms, ""),
+                substrates = tidyr::replace_na(substrates, "No data about substrate.")
+                )
+
+# Save to the file for further formatting of the checklist in Word -------------
     
+readr::write_tsv(checklist, file = "output/Checklist_aphhet_euro.tsv")
 
-readr::write_tsv(checklist,
-                 file = "output/Checklist_aphhet_euro.tsv")
-
-save(checklist,
-     file = "output/Checklist_aphhet_euro.rda")
+save(checklist, file = "output/Checklist_aphhet_euro.Rda")

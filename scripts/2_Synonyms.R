@@ -1,7 +1,13 @@
+library(magrittr)
+
+# Select dataframe you need
+
+data <- aphhet_euro
+
 # Assign indices for synonyms ---------------------------------------------------------
 
 synonyms_indexed <- 
-  aphhet_euro %>% 
+  data %>% 
   dplyr::left_join(nomenclator,
                    by = c("scientificName" = "scientificName"),
                    keep = TRUE) %>%
@@ -56,6 +62,7 @@ synonyms <-
   ) %>% 
   dplyr::select(-(taxonRemarks:group_size)) %>% 
   dplyr::filter(acceptedNameUsage != scientificName) %>% 
-  dplyr::mutate(scientificName = stringr::str_c(scientificName, "!", counter)) %>% 
+  dplyr::mutate(scientificName = stringr::str_c(scientificName, 
+                                                "^", counter, "^")) %>% 
   dplyr::group_by(acceptedNameUsage) %>% 
   dplyr::summarize(synonyms = stringr::str_c(scientificName, collapse = " "))
