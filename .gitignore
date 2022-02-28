@@ -6,6 +6,6 @@
 data/Data.tsv
 data/References.tsv
 
-output/
+output/*
 
-temp/
+temp/*

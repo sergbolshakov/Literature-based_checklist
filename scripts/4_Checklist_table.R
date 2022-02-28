@@ -109,3 +109,6 @@ checklist <-
 readr::write_tsv(checklist, file = "output/Checklist_aphhet_euro.tsv")
 
 save(checklist, file = "output/Checklist_aphhet_euro.Rda")
+
+rmarkdown::render("Checklist.Rmd",
+                  output_file = "../output/Checklist_aphhet_euro.docx")
