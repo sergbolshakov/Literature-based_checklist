@@ -91,3 +91,7 @@ aphhet_euro <-
     string = bibliographicCitation_cl,
     pattern = "[()]"
   ))
+
+# Select dataframe you need
+
+data <- aphhet_euro

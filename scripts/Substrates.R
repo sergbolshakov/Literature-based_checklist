@@ -70,6 +70,11 @@ substrates_grouped <-
   dplyr::mutate(group_size = dplyr::n()) %>%
   dplyr::filter(!(group_size > 1 & substrate == "NO"),
                 dplyr::case_when(
+                  any(type == "wood" & group_size > 1 & substrate  == "wood") ~ 
+                    substrate != "wood",
+                  TRUE ~ all()
+                ),
+                dplyr::case_when(
                   any(type == "wood" & group_size > 1 & substrate %in% coniferous) ~ 
                     substrate != "coniferous",
                   TRUE ~ all()

@@ -6,4 +6,6 @@ A literature database must satisfy the conditions for correct work of the script
 - the data table should be accompanied by the reference table synchronized with Zotero / Juris-M library - the table should contain the fields of internal identifiers of records in the library (Zotero Key) and the scanned citations (the [RTF/ODF-Scan add-on](https://zotero-odf-scan.github.io/zotero-odf-scan/) should be installed);
 - the nomenclature table with information about taxon names should have in addition to scientific name and accepted name fields also fields indicating the taxonomic status of the name (accepted, synonym, or misapplied) and protonym to determine homotypic synonyms.
 
-The scripts output a summary table for the checklist, which is then sent to Word etc. for text formatting, using wildcards to find and replace formatting elements.
+The scripts output the checklist as document in `.docx` format.
+
+There are still shortcomings in the formatting of the text at the moment. At least two replacements must be made: `.^p` replace with `.^p^p`, and `^l` replace with `^p`.

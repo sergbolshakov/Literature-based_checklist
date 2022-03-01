@@ -1,9 +1,3 @@
-library(magrittr)
-
-# Select dataframe you need
-
-data <- aphhet_euro
-
 # Assign indices for synonyms ---------------------------------------------------------
 
 synonyms_indexed <- 

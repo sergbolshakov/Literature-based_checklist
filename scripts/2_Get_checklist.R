@@ -1,8 +1,14 @@
 library(magrittr)
 
-# Select dataframe you need
+# Select dataframe you need ----------------------------------------------------
 
 data <- aphhet_euro
+
+# Get synonyms and substrates if you need --------------------------------------
+
+source("scripts/Synonyms.R")
+
+source("scripts/Substrates.R")
 
 # Merge citations for each region ----------------------------------------------
 
@@ -57,7 +63,12 @@ citations <-
   dplyr::summarize(citations = stringr::str_c(bibliographicCitation_cl,
                                               collapse = "; ")
                    ) %>% 
-  dplyr::ungroup()
+  dplyr::ungroup() %>% 
+  dplyr::mutate(stateProvince = stringr::str_replace_all(
+    string = stateProvince,
+    pattern = "ZZ ",
+    replacement = "")
+  )
 
 # Merge regions with citations for each accepted species -----------------------
   
@@ -106,9 +117,9 @@ checklist <-
 
 # Save to the file for further formatting of the checklist in Word -------------
     
-readr::write_tsv(checklist, file = "output/Checklist_aphhet_euro.tsv")
-
 save(checklist, file = "output/Checklist_aphhet_euro.Rda")
 
-rmarkdown::render("Checklist.Rmd",
+# Output the checklist as docx document ----------------------------------------
+
+rmarkdown::render(input = "scripts/Checklist.Rmd",
                   output_file = "../output/Checklist_aphhet_euro.docx")
