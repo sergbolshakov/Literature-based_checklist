@@ -8,6 +8,11 @@ data <- aphhet_euro
 
 substrates_ungrouped <- 
   data %>% 
+  dplyr::filter(!taxonomicStatus %in% c("#N/A",
+                                        "doubtful",
+                                        "absent name",
+                                        "ambiguous name")
+                ) %>% 
   dplyr::select(acceptedNameUsage, associatedTaxa) %>% 
   dplyr::group_by(acceptedNameUsage) %>% 
   dplyr::distinct() %>% 
@@ -83,6 +88,21 @@ substrates_grouped <-
                   any(type == "wood" & group_size > 1 & substrate %in% deciduous) ~ 
                     substrate != "deciduous",
                   TRUE ~ all()
+                ),
+                dplyr::case_when(
+                  any(type == "ferns" & group_size > 1 & substrate  == "ferns") ~ 
+                    substrate != "ferns",
+                  TRUE ~ all()
+                ),
+                dplyr::case_when(
+                  any(type == "herbs" & group_size > 1 & substrate  == "herbs") ~ 
+                    substrate != "herbs",
+                  TRUE ~ all()
+                ),
+                dplyr::case_when(
+                  any(type == "basidiomata" & group_size > 1 & substrate  == "basidiomata") ~ 
+                    substrate != "basidiomata",
+                  TRUE ~ all()
                 )
   ) %>% 
   dplyr::summarize(substrate = stringr::str_c("*", substrate, "*"),
@@ -120,11 +140,11 @@ substrates_grouped <-
     stringr::coll(
       c("wood (*wood*)" = "wood",
         "litter (*litter*)" = "litter",
-        "litter (*debris*)" = "litter",
+        "litter (*debris*)" = "litter (debris)",
         "litter (*cones*)" = "litter (cones)",
         "litter (*leaves*)" = "litter (leaves)",
         "ferns (*ferns*)" = "ferns",
-        "herbs (*herbs*)" = "litter",
+        "herbs (*herbs*)" = "herbs",
         "mosses (*mosses*)" = "mosses",
         "basidiomata (*basidiomata*)" = "basidiomata",
         "No data about substrate (*No data about substrate*)" = "No data about substrate")

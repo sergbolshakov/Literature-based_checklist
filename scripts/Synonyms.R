@@ -7,6 +7,9 @@ synonyms_indexed <-
                    keep = TRUE) %>%
   dplyr::select(acceptedNameUsage = acceptedNameUsage.x,
                 scientificName = scientificName.x,
+                taxonRank,
+                taxonName,
+                genericName:scientificNameAuthorship,
                 taxonRemarks = taxonRemarks.y,
                 taxonomicStatus = taxonomicStatus.x,
                 protonymID) %>% 
@@ -17,6 +20,14 @@ synonyms_indexed <-
                                         "ambiguous name"),
                 acceptedNameUsage != "#N/A",
                 taxonomicStatus != "#N/A") %>% 
+  dplyr::mutate(scientificName_formatted = dplyr::case_when(
+    taxonRank == "species" ~ stringr::str_c("*", taxonName, "* ",
+                                            scientificNameAuthorship),
+    TRUE ~ stringr::str_c("*", genericName, " ", specificEpithet, "* ",
+                          verbatimTaxonRank, " *", infraspecificEpithet, "* ",
+                          scientificNameAuthorship)
+    )) %>% 
+  dplyr::select(-(taxonRank:scientificNameAuthorship)) %>% 
   dplyr::group_by(acceptedNameUsage,
                   protonymID) %>% 
   dplyr::arrange(acceptedNameUsage,
@@ -39,24 +50,25 @@ synonyms_indexed <-
 
 synonyms <-
   synonyms_indexed %>% 
-  dplyr::mutate(scientificName = stringr::str_c(
+  dplyr::mutate(scientificName_formatted = stringr::str_c(
     dplyr::case_when(
       taxonomicStatus == "homotypic synonym" ~ "≡ ",
       taxonomicStatus == "heterotypic synonym" | taxonomicStatus == "misapplied name" ~ "= ",
       TRUE ~ ""
     ),
-    scientificName
+    scientificName_formatted
   ),
-  scientificName = dplyr::case_when(
+  scientificName_formatted = dplyr::case_when(
     taxonomicStatus == "misapplied name" ~ stringr::str_c(
-      scientificName, " ", taxonRemarks
+      scientificName_formatted, " ", taxonRemarks
     ),
-    TRUE ~ scientificName
+    TRUE ~ scientificName_formatted
   )
   ) %>% 
-  dplyr::select(-(taxonRemarks:group_size)) %>% 
+  dplyr::select(-(taxonRemarks:protonymID),
+                -group_size) %>% 
   dplyr::filter(acceptedNameUsage != scientificName) %>% 
-  dplyr::mutate(scientificName = stringr::str_c(scientificName, 
+  dplyr::mutate(scientificName_formatted = stringr::str_c(scientificName_formatted, 
                                                 "^", counter, "^")) %>% 
   dplyr::group_by(acceptedNameUsage) %>% 
-  dplyr::summarize(synonyms = stringr::str_c(scientificName, collapse = " "))
+  dplyr::summarize(synonyms = stringr::str_c(scientificName_formatted, collapse = " "))
