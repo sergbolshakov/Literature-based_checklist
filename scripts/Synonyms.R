@@ -1,4 +1,4 @@
-# Assign indices for synonyms ---------------------------------------------------------
+# Assign indices for synonyms --------------------------------------------------
 
 synonyms_indexed <- 
   data %>% 
@@ -14,12 +14,7 @@ synonyms_indexed <-
                 taxonomicStatus = taxonomicStatus.x,
                 protonymID) %>% 
   dplyr::distinct() %>% 
-  dplyr::filter(!taxonomicStatus %in% c("doubtful",
-                                        "reidentification",
-                                        "absent name",
-                                        "ambiguous name"),
-                acceptedNameUsage != "#N/A",
-                taxonomicStatus != "#N/A") %>% 
+  dplyr::filter(!taxonomicStatus == "reidentification") %>% 
   dplyr::mutate(scientificName_formatted = dplyr::case_when(
     taxonRank == "species" ~ stringr::str_c("*", taxonName, "* ",
                                             scientificNameAuthorship),

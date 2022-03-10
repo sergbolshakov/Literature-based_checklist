@@ -94,4 +94,6 @@ aphhet_euro <-
 
 # Select dataframe you need
 
-data <- aphhet_euro
+data_raw <- agbol
+
+data_raw <- aphhet_euro
