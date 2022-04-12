@@ -1,0 +1,18 @@
+---
+  output: officedown::rdocx_document
+---
+  
+```{r setup, include=FALSE}
+library(magrittr)
+load("../output/Unique_species.Rda")
+```
+
+```{r echo=FALSE, results='asis'}
+unique_species %>% 
+  dplyr::summarize(region_list = stringr::str_c(species_citations,
+                                                collapse = "  \n")) %>% 
+  dplyr::rowwise() %>% 
+  dplyr::transmute(output = paste0(stateProvince, "  \n",
+                                   region_list, "  \n\n")) %>% 
+  purrr::walk(., ~cat(.))
+```

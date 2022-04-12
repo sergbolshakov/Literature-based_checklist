@@ -43,7 +43,8 @@ aphhet_euro <-
                           "Sverdlovsk Oblast",
                           "Yamalo-Nenets Autonomous Okrug",
                           "ZZ Urals"),
-    !grepl("Weinmann", bibliographicCitation)
+    !grepl("Weinmann", bibliographicCitation),
+    !grepl("Fries", bibliographicCitation)
   ) %>%
   dplyr::left_join(db_all_references)
 
