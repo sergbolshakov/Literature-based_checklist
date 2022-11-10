@@ -19,11 +19,11 @@ substrates_ungrouped <-
     pattern = " ",
     n = 2)[,1]
   ) %>% 
-  dplyr::distinct() %>% 
+  dplyr::distinct() %>%
   dplyr::group_by(acceptedNameUsage) %>% 
   dplyr::mutate(group_size = dplyr::n(),
                 substrate = dplyr::case_when(
-                  group_size == 1 & substrate == "NO" ~ "No data about substrate",
+                  group_size == 1 & substrate == "NO" ~ "Нет данных о субстрате",
                   TRUE ~ substrate
                 )
   ) %>% 
@@ -54,7 +54,7 @@ coniferous <- c("Abies",
 
 deciduous <- 
   substrate_groups %>% 
-  dplyr::filter(type == "wood",
+  dplyr::filter(type_en == "wood",
                 !(substrate %in% coniferous),
                 !(substrate %in% c("wood", "coniferous", "deciduous", "timber"))
   ) %>% 
@@ -69,8 +69,8 @@ substrates_grouped <-
   dplyr::arrange(acceptedNameUsage,
                  factor(substrate,
                         levels = substrate_groups$substrate)
-                 ) %>% 
-  dplyr::group_by(acceptedNameUsage, type_en) %>% 
+  ) %>% 
+  dplyr::group_by(acceptedNameUsage, type_ru) %>% 
   dplyr::mutate(group_size = dplyr::n()) %>%
   dplyr::filter(!(group_size > 1 & substrate == "NO"),
                 dplyr::case_when(
@@ -107,48 +107,57 @@ substrates_grouped <-
   dplyr::summarize(substrate = stringr::str_c("*", substrate, "*"),
                    substrate_groups = stringr::str_c(substrate,
                                                      collapse = ", ")
-                   ) %>% 
+  ) %>% 
   dplyr::arrange(acceptedNameUsage,
-                 factor(type_en,
-                        levels = c("wood",
-                                   "litter",
-                                   "ferns",
-                                   "herbs",
-                                   "mosses",
-                                   "basidiomata",
-                                   "ascomata",
-                                   "lichens")
-                 )
-  ) %>% 
-  dplyr::mutate(substrates = stringr::str_c(type_en, " (", substrate_groups, ")"),
-                substrates = tidyr::replace_na(
-                  dplyr::case_when(substrate_groups == "*algae*" ~ "algae",
-                                   substrate_groups == "*soil*" ~ "soil",
-                                   substrate_groups == "*stones*" ~ "stones",
-                                   substrate_groups == "*No data about substrate*" ~ 
-                                     "No data about substrate",
-                                   TRUE ~ substrates)
-                )
-  ) %>% 
+                 factor(type_ru,
+                        levels = c("древесине",
+                                   "подстилке",
+                                   "травах",
+                                   "папоротниках",
+                                   "мхах",
+                                   "базидиомах",
+                                   "аскомах",
+                                   "лишайниках",
+                                   "водорослях",
+                                   "почве",
+                                   "камнях")
+                        )
+                 ) %>% 
+  dplyr::mutate(substrates = stringr::str_c(type_ru,
+                                            " (",
+                                            substrate_groups,
+                                            ")")
+                ) %>% 
   dplyr::ungroup() %>%
-  dplyr::select(-type_en, -substrate, -substrate_groups) %>% 
+  dplyr::select(-type_ru, -substrate, -substrate_groups) %>% 
   dplyr::filter(!is.na(substrates)) %>% 
   dplyr::distinct() %>% 
   dplyr::mutate(substrates = stringr::str_replace_all(
     string = substrates,
     stringr::coll(
-      c("wood (*wood*)" = "wood",
-        "litter (*litter*)" = "litter",
-        "litter (*debris*)" = "litter (debris)",
-        "litter (*cones*)" = "litter (cones)",
-        "litter (*leaves*)" = "litter (leaves)",
-        "ferns (*ferns*)" = "ferns",
-        "herbs (*herbs*)" = "herbs",
-        "mosses (*mosses*)" = "mosses",
-        "basidiomata (*basidiomata*)" = "basidiomata",
-        "No data about substrate (*No data about substrate*)" = "No data about substrate")
+      c("древесине (*wood*)" = "древесине",
+        "*coniferous*" = "хвойных",
+        "*deciduous*" = "лиственных",
+        "*timber*" = "обработанная древесина",
+        "подстилке (*litter*)" = "подстилке",
+        "подстилке (*debris*)" = "подстилке",
+        "подстилке (*debris*, *litter*)" = "подстилке",
+        "подстилке (*cones*)" = "шишках",
+        "подстилке (*cones*, *litter*)" = "подстилке, шишках",
+        "подстилке (*cones*, *debris*, *fruits*, *litter*)" = "подстилке, шишках",
+        "подстилке (*leaves*)" = "отмерших листьях",
+        "подстилке (*leaves*, *litter*)" = "подстилке, отмерших листьях",
+        "травах (*herbs*)" = "травах",
+        "папоротниках (*ferns*)" = "папоротниках",
+        "мхах (*mosses*)" = "мхах",
+        ", *mosses*" = "",
+        "*mosses*, " = "",
+        "базидиомах (*basidiomata*)" = "базидиомах",
+        "водорослях (*algae*)" = "водорослях",
+        "почве (*soil*)" = "почве",
+        "камнях (*stones*)" = "камнях"
     ))
-  )
+  ))
 
 # Assembly substrates ----------------------------------------------------------
 
@@ -158,7 +167,7 @@ substrates <-
   dplyr::summarise(substrates = stringr::str_c(substrates,
                                                collapse = ", "),
                    substrates = dplyr::case_when(
-                     substrates == "No data about substrate" ~ stringr::str_c(substrates, "."),
-                     TRUE ~ stringr::str_c("On ", substrates, ".")
+                     substrates == "Нет данных о субстрате" ~ stringr::str_c(substrates, "."),
+                     TRUE ~ stringr::str_c("На ", substrates, ".")
                    )
   )

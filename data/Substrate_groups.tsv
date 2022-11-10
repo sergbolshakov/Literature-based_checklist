@@ -1,213 +1,357 @@
-substrate	type
-wood	wood
-coniferous	wood
-deciduous	wood
-Abies	wood
-Acer	wood
-Aesculus	wood
-Alnus	wood
-Amelanchier	wood
-Amorpha	wood
-Aronia	wood
-Berberis	wood
-Betula	wood
-Calligonum	wood
-Caragana	wood
-Carpinus	wood
-Castanea	wood
-Cercidiphyllum	wood
-Cornus	wood
-Corylus	wood
-Cotinus	wood
-Cotoneaster	wood
-Crataegus	wood
-Elaeagnus	wood
-Euonymus	wood
-Fagus	wood
-Frangula	wood
-Fraxinus	wood
-Gleditsia	wood
-Grossularia	wood
-Hippophae	wood
-Juglans	wood
-Juniperus	wood
-Larix	wood
-Lonicera	wood
-Malus	wood
-Morus	wood
-Ostrya	wood
-Padus	wood
-Phellodendron	wood
-Philadelphus	wood
-Picea	wood
-Pinus	wood
-Populus	wood
-Prunus	wood
-Pseudotsuga	wood
-Ptericarya	wood
-Pyrus	wood
-Quercus	wood
-Rhamnus	wood
-Rhus	wood
-Ribes	wood
-Robinia	wood
-Rosa	wood
-Salix	wood
-Sambucus	wood
-Sorbaria	wood
-Sorbus	wood
-Spiraea	wood
-Swida	wood
-Syringa	wood
-Tamarix	wood
-Thuja	wood
-Tilia	wood
-Ulmus	wood
-Viburnum	wood
-timber	wood
-cones	litter
-debris	litter
-leaves	litter
-litter	litter
-ferns	ferns
-Athyrium	ferns
-Cystopteris	ferns
-Dryopteris	ferns
-Matteuccia	ferns
-Pteridium	ferns
-Pteris	ferns
-herbs	herbs
-Aconitum	herbs
-Adonis	herbs
-Agropyron	herbs
-Alopecurus	herbs
-Amaranthus	herbs
-Angelica	herbs
-Anthryscus	herbs
-Arctagrostis	herbs
-Arctium	herbs
-Artemisia	herbs
-Calamagrostis	herbs
-Carex	herbs
-Cirsium	herbs
-Cladium	herbs
-Cucumis	herbs
-Dactylis	herbs
-Deschampsia	herbs
-Elytrigia	herbs
-Epilobium	herbs
-Equisetum	herbs
-Euphorbia	herbs
-Festuca	herbs
-Filipendula	herbs
-Geranium	herbs
-Goodyera	herbs
-Heracleum	herbs
-Hierochloe	herbs
-Humulus	herbs
-Iris	herbs
-Juncus	herbs
-Koeleria	herbs
-Linaria	herbs
-Lupinus	herbs
-Medicago	herbs
-Melica	herbs
-Melilotus	herbs
-Molinia	herbs
-Orthilia	herbs
-Phleum	herbs
-Phragmites	herbs
-Polygonum	herbs
-Pyrola	herbs
-Ranunculus	herbs
-Salvia	herbs
-Schoenoplectus	herbs
-Schoenus	herbs
-Scirpus	herbs
-Secale	herbs
-Solanum	herbs
-Sonchus	herbs
-Stipa	herbs
-Trifolium	herbs
-Typha	herbs
-Urtica	herbs
-Veratrum	herbs
-Veronica	herbs
-Rubus	herbs
-Dicranum	mosses
-Pleurozium	mosses
-Polytrichum	mosses
-Pylaisia	mosses
-Sphagnum	mosses
-mosses	mosses
-Colpoma	ascomata
-Kretzschmaria	ascomata
-Lophodermium	ascomata
-basidiomata	basidiomata
-Amyloporia	basidiomata
-Calvatia	basidiomata
-Cantharellus	basidiomata
-Collybia	basidiomata
-Cystostereum	basidiomata
-Dacrymyces	basidiomata
-Daedaleopsis	basidiomata
-Datronia	basidiomata
-Fomes	basidiomata
-Fomitiporia	basidiomata
-Fomitopsis	basidiomata
-Ganoderma	basidiomata
-Gloeoporus	basidiomata
-Gymnopus	basidiomata
-Heterobasidion	basidiomata
-Hydnoporia	basidiomata
-Hymenochaete	basidiomata
-Inocutis	basidiomata
-Inonotus	basidiomata
-Ischnoderma	basidiomata
-Kneiffiella	basidiomata
-Kurtia	basidiomata
-Lyomyces	basidiomata
-Mensularia	basidiomata
-Naematelia	basidiomata
-Peniophora	basidiomata
-Phaeolus	basidiomata
-Phellinidium	basidiomata
-Phellinopsis	basidiomata
-Phellinus	basidiomata
-Phellopilus	basidiomata
-Phylloporia	basidiomata
-Porodaedalea	basidiomata
-Postia	basidiomata
-Rhodofomes	basidiomata
-Stereum	basidiomata
-Tomentella	basidiomata
-Trametes	basidiomata
-Trichaptum	basidiomata
-lichens	lichens
-Bryoria	lichens
-Caloplaca	lichens
-Candelariella	lichens
-Cetrariella	lichens
-Cladonia	lichens
-Hypogymnia	lichens
-Lecania	lichens
-Lecanora	lichens
-Melanelia	lichens
-Melanohalea	lichens
-Mycoblastus	lichens
-Nephroma	lichens
-Parmelia	lichens
-Phaeophyscia	lichens
-Physcia	lichens
-Physconia	lichens
-Placynthiella	lichens
-Platismatia	lichens
-Ramalina	lichens
-Tuckermannopsis	lichens
-Usnea	lichens
-Violella	lichens
-Xanthomendoza	lichens
-Xanthoria	lichens
-algae	
-soil	
-stones	
+substrate	type_en	type_ru
+algae	algae	водорослях
+Coccomyxa	algae	водорослях
+Biscogniauxia	ascomata	аскомах
+Colpoma	ascomata	аскомах
+Kretzschmaria	ascomata	аскомах
+Lophodermium	ascomata	аскомах
+pyrenomycetes	ascomata	аскомах
+Aleurodiscus	basidiomata	базидиомах
+Amylocorticiellum	basidiomata	базидиомах
+Amyloporia	basidiomata	базидиомах
+basidiomata	basidiomata	базидиомах
+Calvatia	basidiomata	базидиомах
+Cantharellus	basidiomata	базидиомах
+Collybia	basidiomata	базидиомах
+Cystostereum	basidiomata	базидиомах
+Dacrymyces	basidiomata	базидиомах
+Daedaleopsis	basidiomata	базидиомах
+Datronia	basidiomata	базидиомах
+Fomes	basidiomata	базидиомах
+Fomitiporia	basidiomata	базидиомах
+Fomitopsis	basidiomata	базидиомах
+Ganoderma	basidiomata	базидиомах
+Gloeophyllum	basidiomata	базидиомах
+Gloeoporus	basidiomata	базидиомах
+Gymnopus	basidiomata	базидиомах
+Heterobasidion	basidiomata	базидиомах
+Hydnoporia	basidiomata	базидиомах
+Hymenochaete	basidiomata	базидиомах
+Inocutis	basidiomata	базидиомах
+Inonotus	basidiomata	базидиомах
+Ischnoderma	basidiomata	базидиомах
+Kneiffiella	basidiomata	базидиомах
+Kurtia	basidiomata	базидиомах
+Lyomyces	basidiomata	базидиомах
+Mensularia	basidiomata	базидиомах
+Naematelia	basidiomata	базидиомах
+Peniophora	basidiomata	базидиомах
+Phaeolus	basidiomata	базидиомах
+Phanerochaete	basidiomata	базидиомах
+Phellinidium	basidiomata	базидиомах
+Phellinopsis	basidiomata	базидиомах
+Phellinus	basidiomata	базидиомах
+Phellopilus	basidiomata	базидиомах
+Phylloporia	basidiomata	базидиомах
+Porodaedalea	basidiomata	базидиомах
+Postia	basidiomata	базидиомах
+Rhodofomes	basidiomata	базидиомах
+Stereum	basidiomata	базидиомах
+Tomentella	basidiomata	базидиомах
+Trametes	basidiomata	базидиомах
+Trichaptum	basidiomata	базидиомах
+Athyrium	ferns	папоротниках
+Cystopteris	ferns	папоротниках
+Dryopteris	ferns	папоротниках
+ferns	ferns	папоротниках
+Matteuccia	ferns	папоротниках
+Pteridium	ferns	папоротниках
+Pteris	ferns	папоротниках
+Achillea	herbs	травах
+Aconitum	herbs	травах
+Adonis	herbs	травах
+Agropyron	herbs	травах
+Alisma	herbs	травах
+Alopecurus	herbs	травах
+Amaranthus	herbs	травах
+Angelica	herbs	травах
+Anthoxanthum	herbs	травах
+Anthriscus	herbs	травах
+Anthyllis	herbs	травах
+Apiaceae	herbs	травах
+Arabidopsis	herbs	травах
+Arctagrostis	herbs	травах
+Arctium	herbs	травах
+Armoracia	herbs	травах
+Artemisia	herbs	травах
+Asparagus	herbs	травах
+Avena	herbs	травах
+Barbarea	herbs	травах
+Beta	herbs	травах
+Brassica	herbs	травах
+Bromus	herbs	травах
+Bupleurum	herbs	травах
+Calamagrostis	herbs	травах
+Calystegia	herbs	травах
+Campanula	herbs	травах
+Capsella	herbs	травах
+Carex	herbs	травах
+Cerastium	herbs	травах
+Cirsium	herbs	травах
+Cladium	herbs	травах
+Convolvulus	herbs	травах
+Cucumis	herbs	травах
+Cucurbita	herbs	травах
+Dactylis	herbs	травах
+Deschampsia	herbs	травах
+Dioscorea	herbs	травах
+Eleocharis	herbs	травах
+Elytrigia	herbs	травах
+Epilobium	herbs	травах
+Equisetum	herbs	травах
+Euphorbia	herbs	травах
+Festuca	herbs	травах
+Filipendula	herbs	травах
+Gentiana	herbs	травах
+Geranium	herbs	травах
+Goodyera	herbs	травах
+Helianthus	herbs	травах
+Heracleum	herbs	травах
+herbs	herbs	травах
+Hierochloe	herbs	травах
+Hordeum	herbs	травах
+Humulus	herbs	травах
+Iris	herbs	травах
+Juncus	herbs	травах
+Koeleria	herbs	травах
+Linaria	herbs	травах
+Linum	herbs	травах
+Lotus	herbs	травах
+Lupinus	herbs	травах
+Medicago	herbs	травах
+Melica	herbs	травах
+Melilotus	herbs	травах
+Menispermum	herbs	травах
+Molinia	herbs	травах
+Myosotis	herbs	травах
+Orthilia	herbs	травах
+Parasenecio	herbs	травах
+Phleum	herbs	травах
+Phragmites	herbs	травах
+Plantago	herbs	травах
+Poa	herbs	травах
+Poaceae	herbs	травах
+Polygonum	herbs	травах
+Pyrola	herbs	травах
+Ranunculus	herbs	травах
+Rubus	herbs	травах
+Salvia	herbs	травах
+Scabiosa	herbs	травах
+Schoenoplectus	herbs	травах
+Schoenus	herbs	травах
+Scirpus	herbs	травах
+Secale	herbs	травах
+Sinapis	herbs	травах
+Sisymbrium	herbs	травах
+Solanum	herbs	травах
+Sonchus	herbs	травах
+Stellaria	herbs	травах
+Stipa	herbs	травах
+Thlaspi	herbs	травах
+Trifolium	herbs	травах
+Triticum	herbs	травах
+Tulipa	herbs	травах
+Typha	herbs	травах
+Urtica	herbs	травах
+Veratrum	herbs	травах
+Verbascum	herbs	травах
+Veronica	herbs	травах
+Zea	herbs	травах
+Bryoria	lichens	лишайниках
+Caloplaca	lichens	лишайниках
+Candelariella	lichens	лишайниках
+Cetrariella	lichens	лишайниках
+Cladonia	lichens	лишайниках
+Hypogymnia	lichens	лишайниках
+Lecania	lichens	лишайниках
+Lecanora	lichens	лишайниках
+lichens	lichens	лишайниках
+Melanelia	lichens	лишайниках
+Melanohalea	lichens	лишайниках
+Mycoblastus	lichens	лишайниках
+Nephroma	lichens	лишайниках
+Parmelia	lichens	лишайниках
+Phaeophyscia	lichens	лишайниках
+Physcia	lichens	лишайниках
+Physconia	lichens	лишайниках
+Placynthiella	lichens	лишайниках
+Platismatia	lichens	лишайниках
+Ramalina	lichens	лишайниках
+Tuckermannopsis	lichens	лишайниках
+Usnea	lichens	лишайниках
+Violella	lichens	лишайниках
+Xanthomendoza	lichens	лишайниках
+Xanthoria	lichens	лишайниках
+cones	litter	подстилке
+debris	litter	подстилке
+fruits	litter	подстилке
+leaves	litter	подстилке
+litter	litter	подстилке
+Dicranum	mosses	мхах
+Homalothecium	mosses	мхах
+Hylocomiadelphus	mosses	мхах
+mosses	mosses	мхах
+Pleurozium	mosses	мхах
+Polytrichum	mosses	мхах
+Pylaisia	mosses	мхах
+Sphagnum	mosses	мхах
+soil	soil	почве
+stones	stones	камнях
+Abelia	wood	древесине
+Abies	wood	древесине
+Acer	wood	древесине
+Actinidia	wood	древесине
+Aesculus	wood	древесине
+Ailanthus	wood	древесине
+Albizia	wood	древесине
+Alnus	wood	древесине
+Amelanchier	wood	древесине
+Amorpha	wood	древесине
+Ampelopsis	wood	древесине
+Arbutus	wood	древесине
+Aristolochia	wood	древесине
+Aronia	wood	древесине
+Aucuba	wood	древесине
+Berberis	wood	древесине
+Betula	wood	древесине
+Broussonetia	wood	древесине
+Buddleja	wood	древесине
+Buxus	wood	древесине
+Calligonum	wood	древесине
+Calocedrus	wood	древесине
+Caragana	wood	древесине
+Carpinus	wood	древесине
+Carya	wood	древесине
+Castanea	wood	древесине
+Catalpa	wood	древесине
+Cedrus	wood	древесине
+Celastrus	wood	древесине
+Celtis	wood	древесине
+Cephalotaxus	wood	древесине
+Cercidiphyllum	wood	древесине
+Cercis	wood	древесине
+charcoal	wood	древесине
+Chimonanthus	wood	древесине
+Cistus	wood	древесине
+Citrus	wood	древесине
+Clematis	wood	древесине
+Coriaria	wood	древесине
+Cornus	wood	древесине
+Corylus	wood	древесине
+Cotinus	wood	древесине
+Cotoneaster	wood	древесине
+Crataegus	wood	древесине
+Cryptomeria	wood	древесине
+Cupressus	wood	древесине
+Cydonia	wood	древесине
+Cytisus	wood	древесине
+Daphne	wood	древесине
+Davidia	wood	древесине
+Diospyros	wood	древесине
+Elaeagnus	wood	древесине
+Ephedra	wood	древесине
+Eriobotrya	wood	древесине
+Erythrostemon	wood	древесине
+Eucalyptus	wood	древесине
+Eucommia	wood	древесине
+Euonymus	wood	древесине
+Exochorda	wood	древесине
+Fagus	wood	древесине
+Ficus	wood	древесине
+Forsythia	wood	древесине
+Frangula	wood	древесине
+Fraxinus	wood	древесине
+Genista	wood	древесине
+Gleditsia	wood	древесине
+Grossularia	wood	древесине
+Gymnocladus	wood	древесине
+Hedera	wood	древесине
+Hippocrepis	wood	древесине
+Hippophae	wood	древесине
+Hydrangea	wood	древесине
+Ilex	wood	древесине
+Jasminum	wood	древесине
+Jubaea	wood	древесине
+Juglans	wood	древесине
+Juniperus	wood	древесине
+Koelreuteria	wood	древесине
+Laburnum	wood	древесине
+Lagerstroemia	wood	древесине
+Larix	wood	древесине
+Laurus	wood	древесине
+Ligustrum	wood	древесине
+Liquidambar	wood	древесине
+Lonicera	wood	древесине
+Maclura	wood	древесине
+Magnolia	wood	древесине
+Malus	wood	древесине
+Melia	wood	древесине
+Mespilus	wood	древесине
+Metasequoia	wood	древесине
+Morus	wood	древесине
+Nerium	wood	древесине
+Olea	wood	древесине
+Osmanthus	wood	древесине
+Ostrya	wood	древесине
+Paliurus	wood	древесине
+Parrotiopsis	wood	древесине
+Parthenocissus	wood	древесине
+Paulownia	wood	древесине
+Periploca	wood	древесине
+Phellodendron	wood	древесине
+Philadelphus	wood	древесине
+Phillyrea	wood	древесине
+Photinia	wood	древесине
+Picea	wood	древесине
+Pinus	wood	древесине
+Pistacia	wood	древесине
+Pittosporum	wood	древесине
+Platanus	wood	древесине
+Platycladus	wood	древесине
+Populus	wood	древесине
+Prunus	wood	древесине
+Pseudotsuga	wood	древесине
+Ptericarya	wood	древесине
+Punica	wood	древесине
+Pyracantha	wood	древесине
+Pyrus	wood	древесине
+Quercus	wood	древесине
+Rhamnus	wood	древесине
+Rhus	wood	древесине
+Ribes	wood	древесине
+Robinia	wood	древесине
+Rosa	wood	древесине
+Salix	wood	древесине
+Sambucus	wood	древесине
+Schinus	wood	древесине
+Schisandra	wood	древесине
+Sequoia	wood	древесине
+Sequoiadendron	wood	древесине
+Sophora	wood	древесине
+Sorbaria	wood	древесине
+Sorbus	wood	древесине
+Spartium	wood	древесине
+Spiraea	wood	древесине
+Spondias	wood	древесине
+Styphnolobium	wood	древесине
+Swida	wood	древесине
+Symphoricarpos	wood	древесине
+Syringa	wood	древесине
+Tamarix	wood	древесине
+Taxodium	wood	древесине
+Taxus	wood	древесине
+Thuja	wood	древесине
+Tilia	wood	древесине
+Trachycarpus	wood	древесине
+Tripterygium	wood	древесине
+Ulmus	wood	древесине
+Viburnum	wood	древесине
+Vitex	wood	древесине
+Vitis	wood	древесине
+Weigela	wood	древесине
+Wisteria	wood	древесине
+Zelkova	wood	древесине
+deciduous	wood	древесине
+coniferous	wood	древесине
+timber	wood	древесине
+wood	wood	древесине

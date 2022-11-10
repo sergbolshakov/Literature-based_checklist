@@ -1,1 +1,1 @@
-scientificNameID	taxonRank	scientificName	basionymID	protonymID	nomenclaturalStatus	taxonName	genericName	specificEpithet	verbatimTaxonRank	infraspecificEpithet	scientificNameAuthorship	group	taxonRemarks
+nameID	basionymID	protonymID	scientificName	taxonRank	nomenclaturalStatus	morphogroup	taxonomicStatus	namePhrase	accordingTo	acceptedName	genus	family	order	taxonRemarks

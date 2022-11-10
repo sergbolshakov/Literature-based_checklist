@@ -3,18 +3,34 @@
 synonyms_indexed <- 
   data %>% 
   dplyr::left_join(nomenclator,
-                   by = c("scientificName" = "scientificName"),
-                   keep = TRUE) %>%
-  dplyr::select(acceptedNameUsage = acceptedNameUsage.x,
-                scientificName = scientificName.x,
+                   by = c("scientificName" = "scientificName")) %>%
+  dplyr::select(acceptedNameUsage,
+                scientificName,
                 taxonRank,
-                taxonName,
-                genericName:scientificNameAuthorship,
-                taxonRemarks = taxonRemarks.y,
-                taxonomicStatus = taxonomicStatus.x,
+                namePhrase,
+                taxonomicStatus,
                 protonymID) %>% 
   dplyr::distinct() %>% 
-  dplyr::filter(!taxonomicStatus == "reidentification") %>% 
+  dplyr::mutate(taxonName = dplyr::case_when(
+    taxonRank == "species" ~ stringr::word(scientificName, 1, 2),
+    TRUE ~ stringr::word(scientificName, 1, 4)
+  )) %>% 
+  dplyr::mutate(genericName = stringr::word(taxonName, 1)) %>%
+  dplyr::mutate(specificEpithet = stringr::word(taxonName, 2)) %>%
+  dplyr::mutate(verbatimTaxonRank = dplyr::case_when(
+    taxonRank != "species" ~ stringr::word(taxonName, 3),
+    TRUE ~ NA_character_
+  )) %>% 
+  dplyr::mutate(infraspecificEpithet = dplyr::case_when(
+    taxonRank != "species" ~ stringr::word(taxonName, 4),
+    TRUE ~ NA_character_
+  )) %>% 
+  dplyr::mutate(
+    scientificNameAuthorship = stringr::str_remove_all(string = scientificName,
+                                                       stringr::coll(taxonName)),
+    scientificNameAuthorship = stringr::str_trim(scientificNameAuthorship, side = "left")
+  ) %>% 
+  # dplyr::filter(!grepl("reidentification", identificationRemarks)) %>% 
   dplyr::mutate(scientificName_formatted = dplyr::case_when(
     taxonRank == "species" ~ stringr::str_c("*", taxonName, "* ",
                                             scientificNameAuthorship),
@@ -22,7 +38,7 @@ synonyms_indexed <-
                           verbatimTaxonRank, " *", infraspecificEpithet, "* ",
                           scientificNameAuthorship)
     )) %>% 
-  dplyr::select(-(taxonRank:scientificNameAuthorship)) %>% 
+  dplyr::select(-(taxonName:scientificNameAuthorship)) %>% 
   dplyr::group_by(acceptedNameUsage,
                   protonymID) %>% 
   dplyr::arrange(acceptedNameUsage,
@@ -31,15 +47,15 @@ synonyms_indexed <-
                                    "homotypic synonym",
                                    "heterotypic synonym",
                                    "misapplied name")),
-                 protonymID,
-                 scientificName) %>% 
+                 scientificName,
+                 protonymID) %>% 
   dplyr::group_by(acceptedNameUsage) %>% 
   dplyr::mutate(group_size = dplyr::n(),
-                counter = dplyr::case_when(
+                name_number = dplyr::case_when(
                   group_size == 1 & taxonomicStatus != "accepted" ~ dplyr::row_number(),
                   group_size > 1 ~ dplyr::row_number()
                 )) %>% 
-  dplyr::mutate(counter = tidyr::replace_na(as.character(counter), ""))
+  dplyr::mutate(name_number = tidyr::replace_na(as.character(name_number), ""))
 
 # Concatenate synonyms ---------------------------------------------------------
 
@@ -55,15 +71,15 @@ synonyms <-
   ),
   scientificName_formatted = dplyr::case_when(
     taxonomicStatus == "misapplied name" ~ stringr::str_c(
-      scientificName_formatted, " ", taxonRemarks
+      scientificName_formatted, " ", namePhrase
     ),
     TRUE ~ scientificName_formatted
   )
   ) %>% 
-  dplyr::select(-(taxonRemarks:protonymID),
+  dplyr::select(-(namePhrase:protonymID),
                 -group_size) %>% 
   dplyr::filter(acceptedNameUsage != scientificName) %>% 
   dplyr::mutate(scientificName_formatted = stringr::str_c(scientificName_formatted, 
-                                                "^", counter, "^")) %>% 
+                                                "^", name_number, "^")) %>% 
   dplyr::group_by(acceptedNameUsage) %>% 
   dplyr::summarize(synonyms = stringr::str_c(scientificName_formatted, collapse = " "))

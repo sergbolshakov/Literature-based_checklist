@@ -1,0 +1,18 @@
+---
+output:
+  officedown::rdocx_document:
+    reference_docx: ../data/Checklist_template.docx
+    mapstyles:
+      Normal: ['Body Text']
+    tables:
+      style: Normal
+      layout: autofit
+---
+
+```{r setup, include=FALSE}
+load("../output/Checklist_index.Rda")
+```
+
+```{r echo=FALSE, results='asis'}
+knitr::kable(checklist_index)
+```

@@ -2,65 +2,81 @@ library(magrittr)
 
 # Import raw data --------------------------------------------------------------
 
-# Import database or text files
+# Import database, Excel or text files
 
 db_all_data <- readr::read_tsv("data/Data.tsv", guess_max = 200000)
-
 db_all_references <- readr::read_tsv("data/References.tsv", guess_max = 2000)
+
+db_all_data <- readxl::read_xlsx("d:/GoogleDrive/FungalDB/Basidiomycetes_Russia.xlsx",
+                                 sheet = "Data",
+                                 guess_max = 200000) %>%  
+  dplyr::select(bibliographicCitation,
+                acceptedNameUsage,
+                previousIdentifications,
+                scientificName,
+                taxonomicStatus,
+                morphogroup,
+                occurrenceRemarks,
+                associatedTaxa,
+                locality,
+                stateProvince,
+                higherGeography,
+                sector) %>% 
+  dplyr::distinct() %>% 
+  dplyr::arrange(bibliographicCitation,
+                 acceptedNameUsage,
+                 stateProvince)
+
+db_all_references <- readxl::read_xlsx("d:/GoogleDrive/FungalDB/Basidiomycetes_Russia.xlsx",
+                                       sheet = "References",
+                                       guess_max = 2000) %>%  
+  dplyr::select(bibliographicCitation,
+                ZoteroScannableCite,
+                PublicationYear)
 
 nomenclator <- googlesheets4::read_sheet(
   ss = "1sYpyYLVejyACo_ktMReHoHKcXsqX5LIYU9Zc2ZOe07g",
   sheet = "Taxa"
-)
+) %>% 
+  dplyr::select(scientificName,
+                protonymID,
+                taxonRank,
+                namePhrase)
+
+# import data on province for checklist in Russian
+
+provinces <- googlesheets4::read_sheet(
+  ss = "1R8tXMAOmgFZyS1Ypsox4Kpqe9IqJjq6hk0vIJtmLR08",
+  sheet = "States"
+) %>% 
+  dplyr::select(alt_name_ru,
+                alt_name_en)
 
 # Prepare data -----------------------------------------------------------------
 
 # First, subset needed data
 
-agbol <- 
-  db_all_data %>%
-  dplyr::filter(group %in% c("agaricoid", "boletoid")) %>% 
-  dplyr::left_join(db_all_references) %>% 
-  dplyr::filter(!PublicationYear %in% c(2021, 2022),
-                !ZoteroKey %in% c("RQUDMHC8",
-                                  "Z2PZIK7S",
-                                  "2QS37RRK",
-                                  "5JJ3SN2X",
-                                  "VKEDT2F9")
-                )
-
-aphhet_euro <-
+aphyllo <-
   db_all_data %>%
   dplyr::filter(
-    !group %in% c("agaricoid",
-                  "boletoid",
-                  "gasteroid"),
-    sector == "Europe",
+    !is.na(acceptedNameUsage),
+    !morphogroup %in% c("agaricoid", "boletoid", "gasteroid"),
+    sector == "Europe" | stateProvince == "Sverdlovsk Oblast",
     is.na(higherGeography) | higherGeography != "Northern Caucasus",
-    !stateProvince %in% c("Crimea",
-                          "Sevastopol",
-                          "Chelyabinsk Oblast",
-                          "Sverdlovsk Oblast",
-                          "Yamalo-Nenets Autonomous Okrug",
-                          "ZZ Urals"),
+    !stateProvince %in% c("Yamalo-Nenets Autonomous Okrug"),
     !grepl("Weinmann", bibliographicCitation),
-    !grepl("Fries", bibliographicCitation)
+    !grepl("Fries", bibliographicCitation),
+    !grepl("2022", bibliographicCitation)
   ) %>%
   dplyr::left_join(db_all_references)
 
 # Second, export Zotero Scannable Citations
 
-agbol %>% 
+aphyllo %>% 
   dplyr::select(ZoteroScannableCite) %>% 
   dplyr::distinct() %>% 
   dplyr::arrange(ZoteroScannableCite) %>% 
-  readr::write_tsv("output/References_agbol.tsv")
-
-aphhet_euro %>% 
-  dplyr::select(ZoteroScannableCite) %>% 
-  dplyr::distinct() %>% 
-  dplyr::arrange(ZoteroScannableCite) %>% 
-  readr::write_tsv("output/References_aphhet_euro.tsv")
+  readr::write_tsv("output/References_aphyllo.tsv")
 
 # Third, add all additional needed citations to the file
 # (e.g., paste these citations to a document with review and/or notes),
@@ -71,30 +87,31 @@ aphhet_euro %>%
 
 # Finally, re-import this updated file
 
-agbol_refs <- readr::read_tsv("data/References_agbol.tsv",
-                              guess_max = 1000)
-
-aphhet_euro_refs <- readr::read_tsv("data/References_aphhet_euro.tsv",
-                                    guess_max = 1000)
+aphyllo_refs <- readxl::read_xlsx("data/References_aphyllo.xlsx",
+                                  guess_max = 1100)
 
 # Join project citations to data
 
-agbol <- 
-  dplyr::left_join(agbol, agbol_refs) %>% 
-  dplyr::mutate(bibliographicCitation_cl = stringr::str_remove_all(
-    string = bibliographicCitation_clear,
+data_raw <- 
+  aphyllo_refs %>% 
+  dplyr::left_join(aphyllo) %>% 
+  dplyr::mutate(citation = stringr::str_remove_all(
+    string = citation,
     pattern = "[()]"
-  ))
-
-aphhet_euro <- 
-  dplyr::left_join(aphhet_euro, aphhet_euro_refs) %>% 
-  dplyr::mutate(bibliographicCitation_cl = stringr::str_remove_all(
-    string = bibliographicCitation_cl,
-    pattern = "[()]"
-  ))
-
-# Select dataframe you need
-
-data_raw <- agbol
-
-data_raw <- aphhet_euro
+  )) %>% 
+  # join data on province if need checklist in Russian
+  dplyr::left_join(provinces,
+                   by = c("stateProvince" = "alt_name_en")) %>% 
+  dplyr::mutate(alt_name_ru = dplyr::case_when(
+    locality == "Arid territories of the South-West of Russia" ~ "ЯЯ АТ",
+    locality == "Lapland" ~ "ЯЯ Лапландия",
+    locality == "Urals" ~ "ЯЯ Урал",
+    TRUE ~ alt_name_ru
+  )) %>% 
+  dplyr::select(citation,
+                PublicationYear,
+                -ZoteroScannableCite,
+                -bibliographicCitation,
+                stateProvince = alt_name_ru,
+                acceptedNameUsage:associatedTaxa) %>% 
+  dplyr::distinct()

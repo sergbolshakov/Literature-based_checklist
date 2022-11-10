@@ -1,5 +1,9 @@
 ---
-output: officedown::rdocx_document
+output:
+  officedown::rdocx_document:
+    reference_docx: ../data/Checklist_template.docx
+    mapstyles:
+      Normal: ['Body Text']
 ---
 
 ```{r setup, include=FALSE}
@@ -10,21 +14,10 @@ load("../output/Checklist.Rda")
 ```{r echo=FALSE, results='asis'}
 checklist %>% 
   dplyr::rowwise() %>% 
-  dplyr::transmute(species = 
-                     paste0(acceptedNameUsage, "  \n",
-                           synonyms, "  \n",
-                           substrates, "  \n",
-                           region_citations, ".  \n\n")
-                   ) %>% 
+  dplyr::transmute(species = paste0(acceptedNameUsage, "\n\n",
+                                    synonyms, "\n\n",
+                                    substrates, "\n\n",
+                                    region_citations, ".\n\n",
+                                    ".\n\n")) %>% 
   purrr::walk(., ~cat(.))
-```
-
-```{r eval=FALSE, echo=FALSE, results='asis'}
-checklist %>% 
-  dplyr::rowwise() %>% 
-  readr::format_delim(delim = "\n",
-                      col_names = FALSE,
-                      quote = "none",
-                      eol = "\n\n") %>% 
-  cat()
 ```

@@ -4,54 +4,71 @@ citations <-
   data %>% 
   dplyr::left_join(synonyms_indexed,
                    by = c("acceptedNameUsage", "scientificName")) %>% 
-  dplyr::select(bibliographicCitation_cl,
+  dplyr::select(citation,
                 PublicationYear,
                 acceptedNameUsage,
+                previousIdentifications,
                 scientificName,
                 taxonomicStatus = taxonomicStatus.x,
                 stateProvince,
-                counter) %>% 
+                name_number) %>% 
   dplyr::distinct() %>% 
-  dplyr::mutate(counter = as.numeric(counter)) %>% 
+  dplyr::mutate(name_number = dplyr::case_when(
+    !is.na(previousIdentifications) ~ "",
+    TRUE ~ name_number
+  )) %>% 
   dplyr::arrange(acceptedNameUsage,
                  stateProvince,
                  PublicationYear,
-                 counter) %>% 
+                 citation,
+                 desc(is.na(previousIdentifications)),
+                 as.numeric(name_number)) %>% 
   dplyr::group_by(acceptedNameUsage,
-                  bibliographicCitation_cl,
-                  stateProvince) %>% 
+                  stateProvince,
+                  citation) %>% 
   dplyr::mutate(
-    counter = stringr::str_c(counter,
-                             collapse = ","),
-    bibliographicCitation_cl = dplyr::case_when(
-      counter != "" ~ stringr::str_c("^", counter, "^",
-                                     bibliographicCitation_cl),
-      TRUE ~ bibliographicCitation_cl
+    # group name numbers for a one reference
+    name_number = dplyr::case_when(
+      is.na(previousIdentifications) ~ stringr::str_c(as.character(name_number),
+                                                      collapse = ","),
+      TRUE ~ as.character(name_number)),
+    name_number = stringr::str_remove_all(string = name_number,
+                                      pattern = ",$"),
+    # superscript name numbers
+    citation = dplyr::case_when(
+      name_number != "" & is.na(previousIdentifications) ~ stringr::str_c("^", name_number, "^",
+                                     citation),
+      TRUE ~ citation
     ),
-    bibliographicCitation_cl = dplyr::case_when(
-      taxonomicStatus == "reidentification" ~ stringr::str_c(
-        bibliographicCitation_cl,
-        ", as ",
-        scientificName
+    # add previous identifications
+    # its should be in italics
+    citation = dplyr::case_when(
+      !is.na(previousIdentifications) ~ stringr::str_c(
+        citation,
+        #", as ",
+        ", как ",
+        previousIdentifications
       ),
-      TRUE ~ bibliographicCitation_cl
+      TRUE ~ citation
     )
   ) %>% 
   dplyr::select(acceptedNameUsage,
                 stateProvince,
-                bibliographicCitation_cl) %>% 
+                citation) %>% 
   dplyr::group_by(acceptedNameUsage,
                   stateProvince) %>% 
   dplyr::distinct() %>% 
-  dplyr::summarize(citations = stringr::str_c(bibliographicCitation_cl,
+  dplyr::summarize(citations = stringr::str_c(citation,
                                               collapse = "; ")
   ) %>% 
   dplyr::ungroup() %>% 
   dplyr::mutate(stateProvince = stringr::str_replace_all(
     string = stateProvince,
-    pattern = "ZZ ",
+    #pattern = "ZZ ",
+    pattern = "ЯЯ ",
     replacement = "")
-  )
+  ) %>% 
+  dplyr::filter(!is.na(stateProvince))
 
 # Merge regions with citations for each accepted species -----------------------
 
@@ -81,17 +98,25 @@ checklist <-
                    by = c("acceptedNameUsage" = "acceptedNameUsage")
   ) %>% 
   dplyr::mutate(acceptedNameUsage = dplyr::case_when(
-    counter != "" ~ stringr::str_c(acceptedNameUsage,
-                                   "^", counter, "^"),
+    name_number != "" ~ stringr::str_c(acceptedNameUsage,
+                                   "^", name_number, "^"),
     TRUE ~ acceptedNameUsage
   )) %>% 
   dplyr::select(acceptedNameUsage,
                 synonyms,
                 substrates,
                 region_citations) %>% 
-  dplyr::mutate(acceptedNameUsage = stringr::str_c("**",
+  dplyr::mutate(taxonName = stringr::word(acceptedNameUsage, 1, 2),
+                acceptedNameUsage = stringr::str_replace_all(
+                  string = acceptedNameUsage,
+                  pattern = stringr::coll(taxonName),
+                  replacement = stringr::str_c("*", taxonName, "*")
+                  ),
+                acceptedNameUsage = stringr::str_c("**",
                                                    acceptedNameUsage,
                                                    "**"),
                 synonyms = tidyr::replace_na(synonyms, ""),
-                substrates = tidyr::replace_na(substrates, "No data about substrate.")
-  )
+                #substrates = tidyr::replace_na(substrates, "No data about substrate.")
+                substrates = tidyr::replace_na(substrates, "Нет данных о субстрате.")
+  ) %>% 
+  dplyr::select(-taxonName)

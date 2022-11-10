@@ -1,8 +1,8 @@
 Version: 1.0
 
-RestoreWorkspace: Default
-SaveWorkspace: Default
-AlwaysSaveHistory: Default
+RestoreWorkspace: No
+SaveWorkspace: Ask
+AlwaysSaveHistory: No
 
 EnableCodeIndexing: Yes
 UseSpacesForTab: Yes
@@ -13,5 +13,7 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 LineEndingConversion: Posix
+
+UseNativePipeOperator: No
 
 MarkdownWrap: Sentence
